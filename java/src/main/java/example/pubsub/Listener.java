@@ -26,6 +26,7 @@ import javax.jms.TextMessage;
 
 import org.fusesource.stomp.jms.StompJmsConnectionFactory;
 import org.fusesource.stomp.jms.StompJmsDestination;
+import org.fusesource.stomp.jms.message.StompJmsMessage;
 
 class Listener {
 
@@ -46,16 +47,21 @@ class Listener {
 	Destination dest = new StompJmsDestination(destination);
 
 	MessageConsumer consumer = session.createConsumer(dest);
-	long start = System.currentTimeMillis();
-	long count = 1;
+	System.currentTimeMillis();
 	System.out.println("Waiting for messages...");
 	while(true) {
 	    Message msg = consumer.receive();
 	    if( msg instanceof  TextMessage ) {
 		String body = ((TextMessage) msg).getText();
 		if( "SHUTDOWN".equals(body)) {
-		    long diff = System.currentTimeMillis() - start;
-		    System.out.println(String.format("Received %d in %.2f seconds", count, (1.0*diff/1000.0)));
+		    break;
+		}
+		System.out.println("Received message = " + body);
+
+	    } else if (msg instanceof StompJmsMessage) {
+		StompJmsMessage smsg = ((StompJmsMessage) msg);
+		String body = smsg.getFrame().contentAsString();
+		if ("SHUTDOWN".equals(body)) {
 		    break;
 		}
 		System.out.println("Received message = " + body);
