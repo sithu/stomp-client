@@ -24,7 +24,7 @@
 	<repositories>
 		<repository>
 			<id>Fusesource Snapshots</id>
-			<url>http://repo.fusesource.com/nexus/content/repositories/snapshots</url>
+			<url>https://repo.fusesource.com/nexus/content/repositories/snapshots</url>
 		</repository>
 	</repositories>
 
